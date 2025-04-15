@@ -1,0 +1,21 @@
+{
+  "short_name": "DVV Meal Plan",
+  "name": "DVV Meal Plan",
+  "icons": [
+    {
+      "src": "/icons/icon.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/icons/icon.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "orientation": "portrait"
+} 

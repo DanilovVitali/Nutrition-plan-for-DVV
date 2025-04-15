@@ -1,0 +1,99 @@
+.mealItem {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.active {
+  background-color: rgba(0, 0, 0, 0.95);
+  border-color: #FF0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.mealHeader {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #FF0000;
+  margin: 0 0 10px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mealTime {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mealTitle {
+  font-size: 18px;
+  color: #FF0000;
+}
+
+.active .mealHeader {
+  font-size: 20px;
+}
+
+.active .mealTitle {
+  font-size: 20px;
+}
+
+.mealContent {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.active .mealContent {
+  color: #FFFFFF;
+}
+
+.dishesList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.dishItem {
+  padding: 4px 0;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
+}
+
+.active .dishItem {
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.4);
+}
+
+.nutrition {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: right;
+  margin-top: 8px;
+}
+
+.active .nutrition {
+  color: #FFFFFF;
+}
+
+/* Стилізація скролбару */
+.mealItem::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mealItem::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mealItem::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 0, 0, 0.5);
+  border-radius: 3px;
+} 

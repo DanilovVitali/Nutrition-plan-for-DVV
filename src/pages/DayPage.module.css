@@ -1,0 +1,133 @@
+.dayPage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #000000;
+  position: relative;
+  overflow: hidden;
+}
+
+.dayPage::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 20%);
+  z-index: 0;
+}
+
+.header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.backButton {
+  position: absolute;
+  left: 20px;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 5px 15px;
+  line-height: 1;
+  text-shadow: 0px 0px 5px rgba(255, 0, 0, 0.5);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.backButton:hover {
+  color: #FF0000;
+  transform: scale(1.1);
+}
+
+.header h1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 0 40px;
+  text-shadow: 0px 0px 8px rgba(255, 0, 0, 0.3);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer {
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.nutritionSummary {
+  font-family: 'Roboto', sans-serif;
+  color: #FFFFFF;
+}
+
+.hydration {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.totals {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* Стилі для блоку з підсумками */
+.summaryBlock {
+  width: 100%;
+  max-width: 350px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.summaryBlock.active {
+  background-color: rgba(0, 0, 0, 0.95);
+  border-color: #FF0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.summaryBlock h3 {
+  color: #FF0000;
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.summaryBlock .hydration {
+  margin-bottom: 10px;
+  color: #FFFFFF;
+  font-size: 14px;
+}
+
+.summaryBlock .totals {
+  color: #FFFFFF;
+  font-weight: 500;
+} 
