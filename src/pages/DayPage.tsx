@@ -83,22 +83,11 @@ const DayPage: React.FC = () => {
         <div 
           className={`${styles.summaryBlock} ${isActive ? styles.active : ''}`} 
           style={{ 
-            backgroundColor: 'rgba(0, 0, 0, 1)', // Повністю непрозорий чорний фон
+            backgroundColor: 'rgba(0, 0, 0, 1)',
             position: 'relative',
-            zIndex: isActive ? 30 : 5 // Високий z-index
+            zIndex: isActive ? 30 : 5
           }}
         >
-          {/* Додатковий фоновий елемент, який гарантовано перекриє centerLine */}
-          <div style={{
-            position: 'absolute',
-            left: '-20px',
-            right: '-20px',
-            top: '-20px',
-            bottom: '-20px',
-            backgroundColor: '#000000',
-            zIndex: -1
-          }} />
-          
           <h3>Загальна інформація</h3>
           <div className={styles.hydration}>{item.hydration}</div>
           <div className={styles.totals}>
