@@ -27,15 +27,17 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0, hideCenterLin
     setActiveIndex(initialIndex);
   }, [initialIndex]);
   
-  // Додаємо стан для визначення, який елемент є останнім (для блоку "Загальна інформація")
+  // Змінюємо логіку відображення centerLine
   useEffect(() => {
-    // Застосовуємо цю логіку тільки коли hideCenterLineForLastItem=true (для DayPage)
-    if (hideCenterLineForLastItem && activeIndex === items.length - 1) {
-      setShowCenterLine(false);
-    } else {
-      setShowCenterLine(true);
-    }
-  }, [activeIndex, items.length, hideCenterLineForLastItem]);
+    // Показуємо centerLine під час прокрутки (коли dragStartY не null)
+    // або коли активний елемент не є останнім, або коли не потрібно ховати лінію
+    const shouldShowLine = 
+      dragStartY !== null || 
+      !hideCenterLineForLastItem || 
+      activeIndex !== items.length - 1;
+    
+    setShowCenterLine(shouldShowLine);
+  }, [activeIndex, items.length, hideCenterLineForLastItem, dragStartY]);
   
   // Блокуємо скрол сторінки під час взаємодії з колесом
   useEffect(() => {
@@ -84,8 +86,14 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0, hideCenterLin
     
     if (dragType === 'start') {
       setDragStartY(clientY);
+      // Завжди показуємо centerLine при початку перетягування
+      setShowCenterLine(true);
     } else if (dragType === 'end') {
       setDragStartY(null);
+      // Приховуємо centerLine після закінчення перетягування, якщо активний елемент - останній
+      if (hideCenterLineForLastItem && activeIndex === items.length - 1) {
+        setShowCenterLine(false);
+      }
     } else if (dragStartY !== null) {
       const deltaY = clientY - dragStartY;
       
@@ -102,10 +110,8 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0, hideCenterLin
         const newIndex = (activeIndex - direction + items.length) % items.length;
         setActiveIndex(newIndex);
         
-        // Оновлюємо стан centerLine тільки для DayPage
-        if (hideCenterLineForLastItem) {
-          setShowCenterLine(newIndex !== items.length - 1);
-        }
+        // Під час перетягування завжди показуємо centerLine
+        // Логіка приховування centerLine буде застосована в useEffect
         
         // Скидаємо початкову точку для наступного руху
         setDragStartY(clientY);
@@ -117,9 +123,11 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0, hideCenterLin
   const handleItemClick = (index: number) => {
     setActiveIndex(index);
     
-    // Оновлюємо стан centerLine тільки для DayPage
-    if (hideCenterLineForLastItem) {
-      setShowCenterLine(index !== items.length - 1);
+    // Оновлюємо стан centerLine тільки для DayPage і тільки для останнього елемента
+    if (hideCenterLineForLastItem && index === items.length - 1) {
+      setShowCenterLine(false);
+    } else {
+      setShowCenterLine(true);
     }
     
     if (onSelect) {
