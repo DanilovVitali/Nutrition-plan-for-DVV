@@ -155,21 +155,13 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0, hideCenterLin
       onTouchMove={(e) => handleDrag(e, 'move')}
       onTouchEnd={(e) => handleDrag(e, 'end')}
     >
-      {/* Видаляємо стандартну centerLine */}
-      {/* {showCenterLine && <div className={styles.centerLine} />} */}
+      {/* Повертаємо стандартну centerLine */}
+      <div className={styles.centerLine} />
       
       {items.map((item, index) => {
         const transform = getItemTransform(index);
         const isActive = index === activeIndex;
         const distance = Math.abs(index - activeIndex);
-        
-        // Додаємо видиму centerLine для активного елемента, якщо це не останній елемент
-        // або під час перетягування
-        const showSelectionLine = isActive && (
-          dragStartY !== null || 
-          !hideCenterLineForLastItem || 
-          index !== items.length - 1
-        );
         
         return (
           <motion.div
@@ -180,9 +172,6 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0, hideCenterLin
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             onClick={() => handleItemClick(index)}
           >
-            {/* Додаємо селекційну лінію для поточного елемента якщо потрібно */}
-            {showSelectionLine && <div className={styles.customSelectionLine} />}
-            
             {renderItem(item, isActive, distance)}
           </motion.div>
         );

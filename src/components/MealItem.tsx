@@ -9,10 +9,13 @@ interface MealItemProps {
 }
 
 const MealItemComponent: React.FC<MealItemProps> = ({ meal, isActive, distance }) => {
+  // Перевіряємо, чи це блок загальної інформації
+  const isSummary = meal.name === 'Загальна інформація';
+  
   return (
-    <div className={`${styles.mealItem} ${isActive ? styles.active : ''}`}>
+    <div className={`${styles.mealItem} ${isActive ? styles.active : ''} ${isSummary ? styles.summaryItem : ''}`}>
       <h3 className={styles.mealHeader}>
-        <span className={styles.mealTime}>{meal.time}</span>
+        {meal.time && <span className={styles.mealTime}>{meal.time}</span>}
         <span className={styles.mealTitle}>{meal.name}</span>
       </h3>
       
@@ -23,9 +26,11 @@ const MealItemComponent: React.FC<MealItemProps> = ({ meal, isActive, distance }
           ))}
         </ul>
         
-        <div className={styles.nutrition}>
-          <em>Всього: {meal.nutrition.calories} ккал (Б: {meal.nutrition.protein}г, Ж: {meal.nutrition.fat}г, В: {meal.nutrition.carbs}г)</em>
-        </div>
+        {!isSummary && (
+          <div className={styles.nutrition}>
+            <em>Всього: {meal.nutrition.calories} ккал (Б: {meal.nutrition.protein}г, Ж: {meal.nutrition.fat}г, В: {meal.nutrition.carbs}г)</em>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ const DayPage: React.FC = () => {
   const [meals, setMeals] = useState<MealItem[]>([]);
   const [totalNutrition, setTotalNutrition] = useState({ calories: 0, protein: 0, fat: 0, carbs: 0 });
   const [hydration, setHydration] = useState('');
-  const [wheelItems, setWheelItems] = useState<(MealItem | { isSummary: true, hydration: string, totalNutrition: any })[]>([]);
+  const [wheelItems, setWheelItems] = useState<MealItem[]>([]);
   
   useEffect(() => {
     // Зберігаємо поточний день при завантаженні компонента
@@ -59,14 +59,22 @@ const DayPage: React.FC = () => {
       setTotalNutrition(dayData.totalNutrition);
       setHydration(dayData.hydration);
       
-      // Додаємо блок з підсумками в кінець списку
-      const summaryItem = {
-        isSummary: true as true,
-        hydration: dayData.hydration,
-        totalNutrition: dayData.totalNutrition
+      // Створюємо блок підсумків у форматі MealItem
+      const summaryMeal: MealItem = {
+        time: '',
+        name: 'Загальна інформація',
+        dishes: [
+          `Гідратація: ${dayData.hydration}`,
+          `Калорії за день: ~${dayData.totalNutrition.calories} ккал`,
+          `Білки: ${dayData.totalNutrition.protein}г`,
+          `Жири: ${dayData.totalNutrition.fat}г`,
+          `Вуглеводи: ${dayData.totalNutrition.carbs}г`
+        ],
+        nutrition: dayData.totalNutrition
       };
       
-      setWheelItems([...dayData.meals, summaryItem]);
+      // Додаємо всі блоки в wheelItems
+      setWheelItems([...dayData.meals, summaryMeal]);
     } else {
       console.error('День не знайдено:', simpleDayName);
     }
@@ -76,29 +84,7 @@ const DayPage: React.FC = () => {
     navigate('/');
   };
   
-  const renderWheelItem = (item: any, isActive: boolean, distance: number) => {
-    // Якщо це блок з підсумками
-    if (item.isSummary) {
-      return (
-        <div 
-          className={`${styles.summaryBlock} ${isActive ? styles.active : ''}`} 
-          style={{ 
-            backgroundColor: 'rgba(0, 0, 0, 1)',
-            position: 'relative',
-            zIndex: isActive ? 30 : 5
-          }}
-        >
-          <h3>Загальна інформація</h3>
-          <div className={styles.hydration}>{item.hydration}</div>
-          <div className={styles.totals}>
-            Загальні показники за день: ~{item.totalNutrition.calories} ккал 
-            <br />(Б: {item.totalNutrition.protein}г, Ж: {item.totalNutrition.fat}г, В: {item.totalNutrition.carbs}г)
-          </div>
-        </div>
-      );
-    }
-    
-    // Якщо це звичайний прийом їжі
+  const renderWheelItem = (item: MealItem, isActive: boolean, distance: number) => {
     return <MealItemComponent meal={item} isActive={isActive} distance={distance} />;
   };
   

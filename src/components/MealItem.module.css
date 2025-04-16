@@ -12,11 +12,32 @@
   z-index: 1;
 }
 
+/* Спеціальні стилі для блоку загальної інформації */
+.summaryItem {
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
 .active {
   background-color: rgba(0, 0, 0, 0.95);
   border-color: #FF0000;
   box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
   z-index: 20;
+}
+
+/* Додаткові стилі для блоку загальної інформації */
+.summaryItem .dishItem {
+  padding: 6px 0;
+  font-weight: 500;
+  font-size: 15px;
+  text-align: center;
+}
+
+.summaryItem .dishesList {
+  margin: 10px 0;
+}
+
+.summaryItem.active {
+  background-color: rgba(0, 0, 0, 1);
 }
 
 .mealHeader {
