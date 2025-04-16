@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Wheel from '../components/Wheel';
 import MealItemComponent from '../components/MealItem';
 import styles from './DayPage.module.css';
 import { MealItem } from '../types';
 import { mealsData } from '../data/mealsData';
+import { AppContext } from '../App';
 
 // Повні назви днів для сторінки дня
 const daysOfWeek = [
@@ -35,6 +36,7 @@ const DayPage: React.FC = () => {
   const dayIndex = parseInt(dayId || '0');
   const dayName = daysOfWeek[dayIndex] || daysOfWeek[0];
   const simpleDayName = simpleDaysOfWeek[dayIndex] || simpleDaysOfWeek[0];
+  const { setActiveDay } = useContext(AppContext);
   
   const [meals, setMeals] = useState<MealItem[]>([]);
   const [totalNutrition, setTotalNutrition] = useState({ calories: 0, protein: 0, fat: 0, carbs: 0 });
@@ -42,6 +44,9 @@ const DayPage: React.FC = () => {
   const [wheelItems, setWheelItems] = useState<(MealItem | { isSummary: true, hydration: string, totalNutrition: any })[]>([]);
   
   useEffect(() => {
+    // Зберігаємо поточний день при завантаженні компонента
+    setActiveDay(dayIndex);
+    
     // Завантаження даних про прийоми їжі для обраного дня
     const dayData = mealsData.find(day => 
       day.day === simpleDayName || 
@@ -65,7 +70,7 @@ const DayPage: React.FC = () => {
     } else {
       console.error('День не знайдено:', simpleDayName);
     }
-  }, [simpleDayName]);
+  }, [simpleDayName, dayIndex, setActiveDay]);
   
   const handleBackClick = () => {
     navigate('/');
@@ -75,7 +80,7 @@ const DayPage: React.FC = () => {
     // Якщо це блок з підсумками
     if (item.isSummary) {
       return (
-        <div className={`${styles.summaryBlock} ${isActive ? styles.active : ''}`}>
+        <div className={`${styles.summaryBlock} ${isActive ? styles.active : ''}`} style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}>
           <h3>Загальна інформація</h3>
           <div className={styles.hydration}>{item.hydration}</div>
           <div className={styles.totals}>

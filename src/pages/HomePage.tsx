@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Wheel from '../components/Wheel';
 import DayItem from '../components/DayItem';
 import styles from './HomePage.module.css';
+import { AppContext } from '../App';
 
 // Прості назви днів для головного екрана
 const daysOfWeek = [
@@ -17,6 +18,13 @@ const daysOfWeek = [
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const { activeDay } = useContext(AppContext);
+  const [initialIndex, setInitialIndex] = useState(0);
+  
+  // Встановлюємо початковий індекс для колеса при завантаженні
+  useEffect(() => {
+    setInitialIndex(activeDay);
+  }, [activeDay]);
   
   const handleDaySelect = (day: string) => {
     // При натисканні на день переходимо на сторінку з деталями
@@ -45,6 +53,7 @@ const HomePage: React.FC = () => {
           items={daysOfWeek}
           renderItem={renderDayItem}
           onSelect={handleDaySelect}
+          initialIndex={initialIndex}
         />
       </main>
       

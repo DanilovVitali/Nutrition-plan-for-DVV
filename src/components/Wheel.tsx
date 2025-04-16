@@ -6,16 +6,22 @@ interface WheelProps<T> {
   items: T[];
   renderItem: (item: T, isActive: boolean, distance: number) => React.ReactNode;
   onSelect?: (item: T) => void;
+  initialIndex?: number;
 }
 
-function Wheel<T>({ items, renderItem, onSelect }: WheelProps<T>) {
-  const [activeIndex, setActiveIndex] = useState(0);
+function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<T>) {
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [dragStartY, setDragStartY] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
   const itemHeight = 80; // Висота одного елемента
   const visibleItems = items.length;
   const containerHeight = itemHeight * visibleItems;
+  
+  // Оновлюємо активний індекс, коли змінюється initialIndex
+  useEffect(() => {
+    setActiveIndex(initialIndex);
+  }, [initialIndex]);
   
   // Блокуємо скрол сторінки під час взаємодії з колесом
   useEffect(() => {
@@ -49,6 +55,7 @@ function Wheel<T>({ items, renderItem, onSelect }: WheelProps<T>) {
       y: yTranslate,
       scale,
       opacity,
+      zIndex: wrappedDiff === 0 ? 10 : 1, // Додано z-index для активного елемента
     };
   };
   
