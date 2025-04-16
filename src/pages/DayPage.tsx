@@ -80,7 +80,14 @@ const DayPage: React.FC = () => {
     // Якщо це блок з підсумками
     if (item.isSummary) {
       return (
-        <div className={`${styles.summaryBlock} ${isActive ? styles.active : ''}`} style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}>
+        <div 
+          className={`${styles.summaryBlock} ${isActive ? styles.active : ''}`} 
+          style={{ 
+            backgroundColor: 'rgba(0, 0, 0, 1)', // Повністю непрозорий чорний фон
+            position: 'relative',
+            zIndex: isActive ? 30 : 5 // Ще вищий z-index
+          }}
+        >
           <h3>Загальна інформація</h3>
           <div className={styles.hydration}>{item.hydration}</div>
           <div className={styles.totals}>

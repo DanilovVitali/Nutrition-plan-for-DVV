@@ -18,10 +18,23 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<
   const visibleItems = items.length;
   const containerHeight = itemHeight * visibleItems;
   
+  // Додаємо стан для визначення, чи відображати centerLine
+  const [showCenterLine, setShowCenterLine] = useState(true);
+  
   // Оновлюємо активний індекс, коли змінюється initialIndex
   useEffect(() => {
     setActiveIndex(initialIndex);
   }, [initialIndex]);
+  
+  // Додаємо стан для визначення, який елемент є останнім (для блоку "Загальна інформація")
+  useEffect(() => {
+    // Перевіряємо, чи активний елемент є останнім у списку
+    if (activeIndex === items.length - 1) {
+      setShowCenterLine(false);
+    } else {
+      setShowCenterLine(true);
+    }
+  }, [activeIndex, items.length]);
   
   // Блокуємо скрол сторінки під час взаємодії з колесом
   useEffect(() => {
@@ -88,6 +101,9 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<
         const newIndex = (activeIndex - direction + items.length) % items.length;
         setActiveIndex(newIndex);
         
+        // Оновлюємо стан centerLine
+        setShowCenterLine(newIndex !== items.length - 1);
+        
         // Скидаємо початкову точку для наступного руху
         setDragStartY(clientY);
       }
@@ -97,6 +113,10 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<
   // Обробник вибору елемента
   const handleItemClick = (index: number) => {
     setActiveIndex(index);
+    
+    // Оновлюємо стан centerLine
+    setShowCenterLine(index !== items.length - 1);
+    
     if (onSelect) {
       onSelect(items[index]);
     }
@@ -122,7 +142,8 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<
       onTouchMove={(e) => handleDrag(e, 'move')}
       onTouchEnd={(e) => handleDrag(e, 'end')}
     >
-      <div className={styles.centerLine} />
+      {/* Відображаємо centerLine в залежності від стану */}
+      {showCenterLine && <div className={styles.centerLine} />}
       
       {items.map((item, index) => {
         const transform = getItemTransform(index);
