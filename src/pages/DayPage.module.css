@@ -100,18 +100,24 @@
   width: 100%;
   max-width: 350px;
   padding: 15px;
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: rgba(0, 0, 0, 1); /* Повністю непрозорий чорний фон */
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   text-align: center;
   transition: all 0.3s ease;
+  position: relative; /* Додано позиціонування для дочірніх елементів */
+  overflow: hidden; /* Запобігає витіканню контенту */
 }
 
-.summaryBlock.active {
-  background-color: rgba(0, 0, 0, 0.95);
-  border-color: #FF0000;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-  z-index: 20;
+.summaryBlock::before {
+  content: '';
+  position: absolute;
+  left: -50px;
+  right: -50px;
+  top: -50px;
+  bottom: -50px;
+  background-color: #000000;
+  z-index: -5;
 }
 
 .summaryBlock h3 {
@@ -130,4 +136,11 @@
 .summaryBlock .totals {
   color: #FFFFFF;
   font-weight: 500;
+}
+
+.summaryBlock.active {
+  background-color: rgba(0, 0, 0, 1); /* Повністю непрозорий чорний фон */
+  border-color: #FF0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  z-index: 20;
 } 
