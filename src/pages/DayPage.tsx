@@ -132,6 +132,7 @@ const DayPage: React.FC = () => {
           items={wheelItems}
           renderItem={renderWheelItem}
           onSelect={() => {}}
+          hideCenterLineForLastItem={true}
         />
       </main>
       

@@ -7,9 +7,10 @@ interface WheelProps<T> {
   renderItem: (item: T, isActive: boolean, distance: number) => React.ReactNode;
   onSelect?: (item: T) => void;
   initialIndex?: number;
+  hideCenterLineForLastItem?: boolean;
 }
 
-function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<T>) {
+function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0, hideCenterLineForLastItem = false }: WheelProps<T>) {
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [dragStartY, setDragStartY] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -28,13 +29,13 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<
   
   // Додаємо стан для визначення, який елемент є останнім (для блоку "Загальна інформація")
   useEffect(() => {
-    // Перевіряємо, чи активний елемент є останнім у списку
-    if (activeIndex === items.length - 1) {
+    // Застосовуємо цю логіку тільки коли hideCenterLineForLastItem=true (для DayPage)
+    if (hideCenterLineForLastItem && activeIndex === items.length - 1) {
       setShowCenterLine(false);
     } else {
       setShowCenterLine(true);
     }
-  }, [activeIndex, items.length]);
+  }, [activeIndex, items.length, hideCenterLineForLastItem]);
   
   // Блокуємо скрол сторінки під час взаємодії з колесом
   useEffect(() => {
@@ -101,8 +102,10 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<
         const newIndex = (activeIndex - direction + items.length) % items.length;
         setActiveIndex(newIndex);
         
-        // Оновлюємо стан centerLine
-        setShowCenterLine(newIndex !== items.length - 1);
+        // Оновлюємо стан centerLine тільки для DayPage
+        if (hideCenterLineForLastItem) {
+          setShowCenterLine(newIndex !== items.length - 1);
+        }
         
         // Скидаємо початкову точку для наступного руху
         setDragStartY(clientY);
@@ -114,8 +117,10 @@ function Wheel<T>({ items, renderItem, onSelect, initialIndex = 0 }: WheelProps<
   const handleItemClick = (index: number) => {
     setActiveIndex(index);
     
-    // Оновлюємо стан centerLine
-    setShowCenterLine(index !== items.length - 1);
+    // Оновлюємо стан centerLine тільки для DayPage
+    if (hideCenterLineForLastItem) {
+      setShowCenterLine(index !== items.length - 1);
+    }
     
     if (onSelect) {
       onSelect(items[index]);
